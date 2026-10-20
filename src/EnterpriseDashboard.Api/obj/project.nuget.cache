@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "8QsFoWczZ+k=",
+  "dgSpecHash": "Z06KyW7CkLM=",
   "success": true,
   "projectFilePath": "D:\\Folder\\Code\\Projects\\EnterpriseDashboard\\src\\EnterpriseDashboard.Api\\EnterpriseDashboard.Api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\victo\\.nuget\\packages\\fluentvalidation\\12.2.0\\fluentvalidation.12.2.0.nupkg.sha512",
+    "C:\\Users\\victo\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\12.2.0\\fluentvalidation.dependencyinjectionextensions.12.2.0.nupkg.sha512",
     "C:\\Users\\victo\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.13\\microsoft.aspnetcore.openapi.10.0.13.nupkg.sha512",
     "C:\\Users\\victo\\.nuget\\packages\\microsoft.openapi\\2.12.2\\microsoft.openapi.2.12.2.nupkg.sha512"
   ],
