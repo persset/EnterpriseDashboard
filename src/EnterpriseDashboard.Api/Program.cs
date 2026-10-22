@@ -4,6 +4,7 @@ using EnterpriseDashboard.Infrastructure.Data;
 using EnterpriseDashboard.Infrastructure.Repositories;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Host=localhost\\sqlexpress;Database=DataDashboard;Integrated Security=True";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -26,6 +27,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.MapScalarApiReference(options =>
+    {
+        options.WithTitle("Enterprise DashBoard Api").WithTheme(ScalarTheme.DeepSpace);
+    });
 }
 
 app.UseHttpsRedirection();
