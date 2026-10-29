@@ -13,11 +13,15 @@ namespace EnterpriseDashboard.Api.Controllers
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IValidator<CreateTaskDto> _createTaskValidator;
+        private readonly IValidator<UpdateTaskDto> _updateTaskValidator;
 
-        public TasksController(ITaskRepository taskRepository, IValidator<CreateTaskDto> createTaskValidator)
+        public TasksController(ITaskRepository taskRepository,
+        IValidator<CreateTaskDto> createTaskValidator,
+        IValidator<UpdateTaskDto> updateTaskValidator)
         {
             _taskRepository = taskRepository;
             _createTaskValidator = createTaskValidator;
+            _updateTaskValidator = updateTaskValidator;
         }
 
         [HttpGet]
@@ -55,6 +59,27 @@ namespace EnterpriseDashboard.Api.Controllers
             await _taskRepository.AddAsync(task, cancellationToken);
 
             return CreatedAtRoute("GetTaskById", new { id = task.Id }, task);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTaskDto dto, CancellationToken cancellationToken)
+        {
+            // not really sure if this makes sense, will have to revisit it
+            // cause i understand its useful, but I also assume there will be times that the dto might just bring the changes
+            // and them the null properties must be ignored.
+            var validationResult = await _updateTaskValidator.ValidateAsync(dto, cancellationToken);
+            if (!validationResult.IsValid)
+                return BadRequest();
+
+            var existingTask = await _taskRepository.GetByIdAsync(id, cancellationToken);
+            if (existingTask == null)
+                return NotFound();
+
+            existingTask.UpdateStatus(dto.Status); // for now at least
+
+            await _taskRepository.UpdateAsync(existingTask);
+
+            return Ok(existingTask);
         }
     }
 }
