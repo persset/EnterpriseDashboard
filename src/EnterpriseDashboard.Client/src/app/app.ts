@@ -7,7 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { TaskService } from './services/task';
-import { TaskItem } from './models/task.model';
+import { TaskItem, TaskStatus } from './models/task.model';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   imports: [
@@ -17,7 +18,8 @@ import { TaskItem } from './models/task.model';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    MatCardModule
+    MatCardModule,
+    MatCheckboxModule
   ],
   selector: 'app-root',
   styleUrl: './app.scss',
@@ -25,7 +27,7 @@ import { TaskItem } from './models/task.model';
 })
 export class App implements OnInit {
   tasks: TaskItem[] = [];
-  displayedColumns: string[] = ['title', 'description', 'priority', 'isCompleted'];
+  displayedColumns: string[] = ['title', 'description', 'priority', 'status'];
   taskForm: FormGroup;
 
   constructor(private taskService: TaskService, private fb: FormBuilder) {
@@ -43,7 +45,7 @@ export class App implements OnInit {
   loadTasks(): void {
     this.taskService.getTasks().subscribe({
       next: (data) => this.tasks = data,
-      error: (err) => console.error('Erro ao carregar tarefas', err)
+      error: (err) => console.error('Erro ao carregar tarefas.', err)
     });
   }
 
@@ -55,7 +57,22 @@ export class App implements OnInit {
         this.tasks = [...this.tasks, newTask];
         this.taskForm.reset({ priority: 1 });
       },
-      error: (err) => console.error('Erro ao criar tarefa', err),
+      error: (err) => console.error('Erro ao criar tarefa.', err),
     })
+  }
+
+  toggleTaskCompletion(task: TaskItem): void {
+    const newStatus = task.status === TaskStatus.Completed
+      ? TaskStatus.Pending
+      : TaskStatus.Completed;
+
+    const targetStatus = task.status === TaskStatus.Completed ? TaskStatus.Pending : TaskStatus.Completed;
+
+    this.taskService.updateTask(task.id, { ...task, status: targetStatus }).subscribe({
+      next: (updated) => {
+        this.tasks = this.tasks.map(t => t.id === task.id ? updated : t);
+      },
+      error: (err) => console.error('Erro ao atualizar a tarefa.', err)
+    });
   }
 }

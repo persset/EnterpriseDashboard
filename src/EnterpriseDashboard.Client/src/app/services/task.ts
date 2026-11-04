@@ -15,4 +15,8 @@ export class TaskService {
     createTask(dto: CreateTaskDto): Observable<TaskItem> {
         return this.http.post<TaskItem>(this.apiUrl, dto);
     }
+
+    updateTask(id: string, task: Partial<TaskItem>): Observable<TaskItem> {
+        return this.http.put<TaskItem>(`${this.apiUrl}/${id}`, task);
+    }
 }

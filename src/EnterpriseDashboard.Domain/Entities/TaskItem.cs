@@ -31,7 +31,7 @@ public class TaskItem : Entity
 
     public TaskItem(string title, string description, PriorityLevel priority, DateTime? dueDateUtc = null)
     {
-        if(string.IsNullOrWhiteSpace((title)))
+        if (string.IsNullOrWhiteSpace((title)))
             throw new ArgumentException("Task title cannot be empty.", nameof(title));
 
         Title = title;

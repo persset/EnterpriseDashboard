@@ -1,9 +1,15 @@
+export enum TaskStatus {
+    Pending = 0,
+    InProgress = 1,
+    Completed = 2,
+    Failed = 3
+}
 export interface TaskItem {
     id: string;
     title: string;
     description: string;
     priority: number;
-    isCompleted: boolean;
+    status: TaskStatus;
     dueDateUtc: string;
 }
 

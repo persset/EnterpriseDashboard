@@ -77,7 +77,7 @@ namespace EnterpriseDashboard.Api.Controllers
 
             existingTask.UpdateStatus(dto.Status); // for now at least
 
-            await _taskRepository.UpdateAsync(existingTask);
+            await _taskRepository.UpdateAsync(existingTask, cancellationToken);
 
             return Ok(existingTask);
         }
