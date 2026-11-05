@@ -20,6 +20,11 @@ public class IngestionBatchRepository : IIngestionBatchRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<IEnumerable<IngestionBatch>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.IngestionBatches.ToListAsync(cancellationToken);
+    }
+
     public async Task<IngestionBatch?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.IngestionBatches.FirstOrDefaultAsync(b => b.Id == id, cancellationToken);

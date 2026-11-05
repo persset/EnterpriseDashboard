@@ -19,7 +19,7 @@ public class IngestionBatch : Entity
     public int TotalRecords { get; private set; }
     public string? ErrorSummary { get; private set; }
 
-    private IngestionBatch() {} // Constructor for entity framework
+    private IngestionBatch() { } // Constructor for entity framework
 
     public IngestionBatch(string fileName, long fileSizeBytes, int totalRecords)
     {
@@ -29,7 +29,7 @@ public class IngestionBatch : Entity
         Status = IngestionStatus.Queued;
     }
 
-    public void MarkProcessing()
+    public void MarkAsProcessing()
     {
         Status = IngestionStatus.Processing;
         UpdatedAtUtc = DateTime.UtcNow;
